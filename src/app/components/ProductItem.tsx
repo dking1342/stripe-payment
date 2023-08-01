@@ -149,7 +149,7 @@ const ProductItem = (props: Props) => {
               <>
                 <hr />
                 <p className={styles.itemPrice}>
-                  ￡{(price.unit_amount / 100).toFixed(2)}
+                  ${(price.unit_amount / 100).toFixed(2)}
                 </p>
                 <div className={styles.quantityContainer}>
                   Quantity:

@@ -21,7 +21,7 @@ const ProductCard = ({ item }: Props) => {
       <h1>
         {item.name.length > 35 ? `${item.name.slice(0, 35)}...` : item.name}
       </h1>
-      {default_price && <p>￡{(default_price.unit_amount / 100).toFixed(2)}</p>}
+      {default_price && <p>${(default_price.unit_amount / 100).toFixed(2)}</p>}
     </Link>
   );
 };

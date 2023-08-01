@@ -169,7 +169,7 @@ const ShoppingCart = (props: Props) => {
             </span>
           </Link>
           <span className={styles.cartItemPrice}>
-            ￡{(item.default_price.unit_amount / 100).toFixed(2)}
+            ${(item.default_price.unit_amount / 100).toFixed(2)}
           </span>
           <span className={styles.cartItemQuantityContainer}>
             <button
@@ -188,7 +188,7 @@ const ShoppingCart = (props: Props) => {
             </button>
           </span>
           <span className={styles.cartItemCost}>
-            ￡{((item.default_price.unit_amount / 100) * quantity).toFixed(2)}
+            ${((item.default_price.unit_amount / 100) * quantity).toFixed(2)}
           </span>
           <button
             className={styles.cartItemDel}
@@ -205,8 +205,10 @@ const ShoppingCart = (props: Props) => {
           <span className={styles.cartTotalsQuantity}>
             Quantity: {items.length}
           </span>
-          <span className={styles.cartTotalsTaxes}>Taxes: ￡{tax}</span>
-          <span className={styles.cartTotalsCost}>Cost: ￡{totalCost}</span>
+          <span className={styles.cartTotalsTaxes}>
+            Taxes: ${tax.toFixed(2)}
+          </span>
+          <span className={styles.cartTotalsCost}>Cost: ${totalCost}</span>
         </div>
       </div>
       <div className={styles.cartPaymentContainer}>

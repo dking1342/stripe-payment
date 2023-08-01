@@ -25,7 +25,7 @@ const ProductCards = (props: Props) => {
         setMessages('invalid route request');
       }
       const filteredProducts = data.payload.filter(
-        (x: any) => x.default_price.currency === 'gbp'
+        (x: any) => x.default_price.currency === 'usd'
       );
 
       setProducts(filteredProducts);
