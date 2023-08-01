@@ -128,10 +128,8 @@ const PaymentForm = (props: Props) => {
         options
       );
       const data = await response.json();
-      console.log({ data });
     } catch (error) {
       const err = error as Error;
-      console.log({ err });
     }
   };
 

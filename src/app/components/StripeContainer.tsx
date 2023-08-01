@@ -4,6 +4,7 @@ import { loadStripe } from '@stripe/stripe-js';
 import { Elements } from '@stripe/react-stripe-js';
 import StripeForm from './StripeForm';
 import { fetchOptions } from '../utils/fetchOptions';
+import CONSTANT from '../constants';
 
 type Props = {
   theme?: 'stripe' | 'night' | 'flat' | 'none' | undefined;
@@ -51,9 +52,8 @@ const StripeContainer = ({ theme = 'night', labels = 'floating' }: Props) => {
         return;
       }
       const checkout = JSON.parse(hasCheckout);
-      console.log({ checkout });
       const res = await fetch(
-        'http://localhost:3000/api/v1/payments/create-payment-intent',
+        `${CONSTANT.domain}/api/v1/payments/create-payment-intent`,
         fetchOptions(checkout)
       );
       if (!res.ok) {
