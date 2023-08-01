@@ -1,0 +1,33 @@
+.toastContainer
+  position: absolute
+  bottom: 2rem
+  right: 1rem
+  display: none
+  border-radius: 15px
+  overflow: hidden
+  box-shadow: 2px 2px 5px rgba(0,0,0,0.5)
+
+  .toastSignal
+    width: 60px
+    color: #fff
+    font-size: 1.25rem
+    display: flex
+    align-items: center
+    justify-content: center
+
+  .success
+    background-color: green
+
+  .fail
+    background-color: red
+
+  .toastMessage
+    display: flex
+    align-items: center
+    justify-content: center
+    padding: 1.5rem 2.5rem
+    font-size: 0.8rem
+    text-transform: capitalize
+
+.active
+  display: flex
