@@ -24,7 +24,7 @@ const StripeContainer = ({ theme = 'night', labels = 'floating' }: Props) => {
 
   const getPublishKey = async () => {
     try {
-      const res = await fetch('http://localhost:3000/api/v1/config');
+      const res = await fetch(`${CONSTANT.domain}/api/v1/config`);
       if (!res.ok) {
         setErrors('invalid fetch request');
         return;
