@@ -7,9 +7,9 @@ const stripe = new Stripe(CONSTANT.secret, {
 });
 
 export const POST = async (req: Request) => {
-  let cart;
-  let cus;
-  let invoice;
+  let cart: any;
+  let cus: any;
+  let invoice: any;
   let finalInvoice;
   let errorArr = [];
   try {
