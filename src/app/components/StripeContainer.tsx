@@ -46,8 +46,9 @@ const StripeContainer = ({ theme = 'night', labels = 'floating' }: Props) => {
     try {
       // get checkout state
       const hasCheckout = localStorage.getItem('checkout');
+      const hasCart = localStorage.getItem('cart');
 
-      if (!hasCheckout) {
+      if (!hasCheckout || !hasCart) {
         setErrors('invalid checkout');
         return;
       }

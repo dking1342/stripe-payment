@@ -74,6 +74,9 @@
         font-size: 0.8rem
 
   .cartPaymentContainer
+    display: flex
+    gap: 1rem
+
     .cartPaymentBtn
       padding: 0.75rem 1.5rem
       font-size: 1rem
@@ -90,6 +93,89 @@
       &:hover
         transform: scale(1.01)
         box-shadow: 0 2px 5px rgba(0,0,0,0.25)
+
+.modal
+  display: none
+  position: fixed
+  top: 0
+  left: 0
+  margin: auto auto
+  outline: none
+  border: none
+  width: 100vw
+  height: 100vh
+  background-color: #eee
+
+  form
+    display: flex
+    flex-direction: column
+    align-items: center
+    justify-content: center
+    max-width: 500px
+    width: 95%
+    height: fit-content
+    padding: 2rem 0
+    margin: auto auto
+    gap: 2rem
+
+    div
+      width: 100%
+      display: flex
+      gap: 0.25rem
+      align-items: flex-start
+      flex-direction: column
+
+      label
+        font-size: 1rem
+        font-weight: 200
+
+      input
+        height: 2.5rem
+        width: 100%
+        border: none
+        outline: none
+        font-size: 1rem
+        font-weight: 200
+        padding-left: 10px
+
+        &:focus
+          background: #e2e6ff
+
+      small
+        color: #dc5555
+
+    .btnContainer
+      display: flex
+      flex-direction: row
+      gap: 1rem
+
+      button
+        width: 50%
+        padding: 1rem 0
+        border-radius: 25px
+        border: none
+        outline: none
+        cursor: pointer
+        color: #fff
+        font-size: 1.1rem
+        text-transform: capitalize
+        filter: brightness(1)
+        transition: 0.5s ease filter
+
+        &:hover
+          filter: brightness(1.1)
+
+        &:first-child
+          background-color: #dc5555
+
+        &:last-child
+          background-color: #468d42
+
+.disabled
+  pointer-events: none
+
+.notDisabled
+  pointer-events: 'all'
 
 @media (max-width: 650px)
   .cartContainer

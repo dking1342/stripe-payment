@@ -60,6 +60,7 @@ const StripeForm = (props: Props) => {
             router.push(`${CONSTANTS.domain}/shopping/success`);
             localStorage.removeItem('checkout');
             localStorage.removeItem('cart');
+            localStorage.removeItem('customer');
             window.dispatchEvent(new Event('storage'));
             break;
 
