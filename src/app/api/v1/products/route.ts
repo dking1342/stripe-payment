@@ -12,11 +12,21 @@ export const GET = async () => {
       limit: 100,
       expand: ['data.default_price'],
     });
+
+    let filteredProducts: Stripe.Product[] = [];
+
+    if (products.data.length) {
+      filteredProducts = products.data.filter((product) => {
+        const def_price = product.default_price as Stripe.Price;
+        return !def_price.recurring;
+      });
+    }
+
     return NextResponse.json(
       {
         success: true,
         message: 'get product list',
-        payload: products.data,
+        payload: filteredProducts,
       },
       {
         status: 200,

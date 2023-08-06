@@ -40,14 +40,17 @@ const Navbar = (props: Props) => {
       <Link href={'/shopping'} className={styles.iconContainer}>
         <AiOutlineShop />
       </Link>
-      <Link href={'/shopping/cart'} className={styles.iconContainer}>
-        <AiOutlineShoppingCart />
-        {quantity > 0 && (
-          <div className={styles.badge}>
-            <span>{quantity < 10 ? quantity : '9+'}</span>
-          </div>
-        )}
-      </Link>
+      <div>
+        <Link href={'/shopping/subscribe'}>Subscriptions</Link>
+        <Link href={'/shopping/cart'} className={styles.iconContainer}>
+          <AiOutlineShoppingCart />
+          {quantity > 0 && (
+            <div className={styles.badge}>
+              <span>{quantity < 10 ? quantity : '9+'}</span>
+            </div>
+          )}
+        </Link>
+      </div>
     </nav>
   );
 };

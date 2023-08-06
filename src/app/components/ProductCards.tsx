@@ -5,9 +5,12 @@ import Stripe from 'stripe';
 import ProductCard from './ProductCard';
 import styles from '../styles/ProductCards.module.sass';
 
-type Props = {};
+type Props = {
+  url: string;
+  cardName: 'products' | 'subscriptions';
+};
 
-const ProductCards = (props: Props) => {
+const ProductCards = ({ url, cardName }: Props) => {
   const [products, setProducts] = useState<Stripe.Product[]>([]);
   const [messages, setMessages] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -16,7 +19,7 @@ const ProductCards = (props: Props) => {
   const getProducts = async () => {
     setIsLoading(true);
     try {
-      const res = await fetch(`${CONSTANT.domain}/api/v1/products`);
+      const res = await fetch(url);
       if (!res.ok) {
         setMessages('invalid fetch request');
       }
@@ -25,11 +28,11 @@ const ProductCards = (props: Props) => {
         setMessages('invalid route request');
       }
       const filteredProducts = data.payload.filter(
-        (x: any) => x.default_price.currency === 'usd'
+        (x: any) => x.default_price && x.default_price.currency === 'usd'
       );
 
       setProducts(filteredProducts);
-      localStorage.setItem('products', JSON.stringify(filteredProducts));
+      localStorage.setItem(`${cardName}`, JSON.stringify(filteredProducts));
     } catch (error) {
       const err = error as Error;
       setMessages(err.message);
@@ -39,7 +42,7 @@ const ProductCards = (props: Props) => {
   };
 
   const checkLocalStorage = async () => {
-    let localStorageProducts = localStorage.getItem('products');
+    let localStorageProducts = localStorage.getItem(`${cardName}`);
     if (!localStorageProducts) {
       await getProducts();
     } else {
@@ -53,13 +56,13 @@ const ProductCards = (props: Props) => {
 
   if (isLoading) {
     return <div>loading...</div>;
-  } else if (messages) {
+  } else if (!isLoading && messages) {
     <div>{messages}</div>;
   } else {
     return (
       <div className={styles.cardsContainer}>
         {products.map((item) => (
-          <ProductCard key={item.id} item={item} />
+          <ProductCard key={item.id} item={item} cardName={cardName} />
         ))}
       </div>
     );

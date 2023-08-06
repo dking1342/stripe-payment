@@ -8,32 +8,34 @@ const stripe = new Stripe(CONSTANT.secret, {
 
 export const POST = async (req: Request) => {
   try {
-    const { name, email } = await req.json();
-    let customer: Stripe.Customer;
+    const {
+      name,
+      description,
+      unit_amount,
+      currency,
+      images,
+      recurring: sub,
+    } = await req.json();
 
-    const customerSearch = await stripe.customers.search({
-      query: `name:\'${name}\' AND email:\'${email}\'`,
+    const product = await stripe.products.create({
+      name,
+      description,
+      images: [`${images}`],
+      default_price_data: {
+        currency,
+        unit_amount,
+        recurring: { interval: sub.interval },
+      },
     });
-
-    if (!customerSearch.data.length) {
-      const newCustomer = await stripe.customers.create({
-        name,
-        email,
-        description: 'new customer',
-      });
-      customer = newCustomer;
-    } else {
-      customer = customerSearch.data[0];
-    }
 
     return NextResponse.json(
       {
         success: true,
-        message: 'search customer successful',
-        payload: customer,
+        message: 'price set',
+        payload: product,
       },
       {
-        status: 200,
+        status: 201,
       }
     );
   } catch (error) {

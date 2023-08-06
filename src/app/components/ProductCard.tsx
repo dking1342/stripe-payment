@@ -6,13 +6,18 @@ import CONSTANT from '../constants';
 
 type Props = {
   item: Stripe.Product;
+  cardName: 'products' | 'subscriptions';
 };
 
-const ProductCard = ({ item }: Props) => {
+const ProductCard = ({ item, cardName }: Props) => {
   const { default_price }: any = item;
   return (
     <Link
-      href={`${CONSTANT.domain}/shopping/${item.id}`}
+      href={
+        cardName === 'products'
+          ? `${CONSTANT.domain}/shopping/${item.id}`
+          : `${CONSTANT.domain}/shopping/subscribe/${item.id}`
+      }
       className={styles.cardContainer}
     >
       {item.images.map((img) => (

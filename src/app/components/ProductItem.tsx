@@ -6,10 +6,13 @@ import CONSTANT from '../constants';
 import styles from '../styles/ProductItem.module.sass';
 import Link from 'next/link';
 import ToastMsg from './ToastMsg';
+import Modal from './Modal';
 
-type Props = {};
+type Props = {
+  cardName: 'products' | 'subscriptions';
+};
 
-const ProductItem = (props: Props) => {
+const ProductItem = ({ cardName }: Props) => {
   const params = useParams();
   const [item, setItem] = useState<Stripe.Product>();
   const [quantity, setQuantity] = useState<string>('1');
@@ -64,13 +67,18 @@ const ProductItem = (props: Props) => {
     window.dispatchEvent(new Event('storage'));
   };
 
+  const handleAddSubscription = () => {
+    // init modal
+    const modalElement = document.getElementById('modal') as HTMLDialogElement;
+    modalElement.style.display = 'flex';
+    modalElement.showModal();
+  };
+
   // init fn
-  const getProduct = async () => {
+  const getProduct = async (url: string) => {
     setIsLoading(true);
     try {
-      const res = await fetch(
-        `${CONSTANT.domain}/api/v1/products/${params.id}`
-      );
+      const res = await fetch(url);
       if (!res.ok) {
         setMessages('invalid fetch request');
         return;
@@ -94,15 +102,29 @@ const ProductItem = (props: Props) => {
   };
 
   const checkLocalStorage = async () => {
-    const localStorageProduct = localStorage.getItem('products');
+    const localStorageProduct = localStorage.getItem(`${cardName}`);
     if (!localStorageProduct) {
-      await getProduct();
+      if (cardName === 'products') {
+        await getProduct(`${CONSTANT.domain}/api/v1/products/${params.id}`);
+      }
+      if (cardName === 'subscriptions') {
+        await getProduct(
+          `${CONSTANT.domain}/api/v1/products/subscribe/${params.id}`
+        );
+      }
     } else {
       let products: Stripe.Product[] = JSON.parse(localStorageProduct);
       let product = products.find((x) => x.id === params.id);
 
       if (!product) {
-        await getProduct();
+        if (cardName === 'products') {
+          await getProduct(`${CONSTANT.domain}/api/v1/products/${params.id}`);
+        }
+        if (cardName === 'subscriptions') {
+          await getProduct(
+            `${CONSTANT.domain}/api/v1/products/subscribe/${params.id}`
+          );
+        }
       } else {
         setItem(product);
         setPrice(product.default_price);
@@ -138,7 +160,13 @@ const ProductItem = (props: Props) => {
         <div className={styles.itemContainer}>
           <div className={styles.itemImgContainer}>
             <div className={styles.linkContainer}>
-              <Link href={'/shopping'}>Back to home</Link>
+              <Link
+                href={
+                  cardName === 'products' ? '/shopping' : '/shopping/subscribe'
+                }
+              >
+                Back to home
+              </Link>
             </div>
             <img src={item.images[0]} alt={item.name} />
           </div>
@@ -151,29 +179,40 @@ const ProductItem = (props: Props) => {
                 <p className={styles.itemPrice}>
                   ${(price.unit_amount / 100).toFixed(2)}
                 </p>
-                <div className={styles.quantityContainer}>
-                  Quantity:
-                  <select
-                    name="quantity"
-                    id="quantity"
-                    value={quantity}
-                    onChange={(e) => setQuantity(e.target.value)}
+                {cardName === 'products' && (
+                  <div className={styles.quantityContainer}>
+                    Quantity:
+                    <select
+                      name="quantity"
+                      id="quantity"
+                      value={quantity}
+                      onChange={(e) => setQuantity(e.target.value)}
+                    >
+                      <option value="1">1</option>
+                      <option value="2">2</option>
+                      <option value="3">3</option>
+                      <option value="4">4</option>
+                      <option value="5">5</option>
+                      <option value="6">6</option>
+                      <option value="7">7</option>
+                      <option value="8">8</option>
+                      <option value="9">9</option>
+                      <option value="10">10</option>
+                    </select>
+                  </div>
+                )}
+                {cardName === 'products' ? (
+                  <button className={styles.itemBtn} onClick={handleAddToCart}>
+                    Add to Cart
+                  </button>
+                ) : (
+                  <button
+                    className={styles.itemBtn}
+                    onClick={handleAddSubscription}
                   >
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                    <option value="5">5</option>
-                    <option value="6">6</option>
-                    <option value="7">7</option>
-                    <option value="8">8</option>
-                    <option value="9">9</option>
-                    <option value="10">10</option>
-                  </select>
-                </div>
-                <button className={styles.itemBtn} onClick={handleAddToCart}>
-                  Add to Cart
-                </button>
+                    Make Subscription
+                  </button>
+                )}
               </>
             ) : (
               <div className={styles.itemOutStock}>
@@ -187,6 +226,7 @@ const ProductItem = (props: Props) => {
           status={toastStatus}
           message={toastMessage}
         />
+        <Modal item={item} paymentMethod="sub" />
       </>
     );
   } else {
