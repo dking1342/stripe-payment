@@ -54,6 +54,7 @@ const StripeForm = (props: Props) => {
         setMessages(error.message);
         return;
       }
+
       if (paymentIntent && paymentIntent.status) {
         switch (paymentIntent.status) {
           case 'succeeded':
@@ -72,7 +73,7 @@ const StripeForm = (props: Props) => {
     } catch (error) {
       const err = error as Error;
       setMessages(err.message);
-      return;
+      // return;
     }
   };
 

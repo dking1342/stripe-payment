@@ -1,6 +1,6 @@
 'use client';
 import { useParams } from 'next/navigation';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import Stripe from 'stripe';
 import CONSTANT from '../constants';
 import styles from '../styles/ProductItem.module.sass';
@@ -11,6 +11,8 @@ import Modal from './Modal';
 type Props = {
   cardName: 'products' | 'subscriptions';
 };
+
+export const isBrowser = typeof window !== undefined;
 
 const ProductItem = ({ cardName }: Props) => {
   const params = useParams();

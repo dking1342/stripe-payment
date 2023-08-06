@@ -1,7 +1,7 @@
 import React from 'react';
 import { Metadata } from 'next';
-import ProductItem from '../../../components/ProductItem';
 import styles from '../../../styles/Cart.module.sass';
+import ProductItem from '../../../components/ProductItem';
 
 type Props = {};
 
